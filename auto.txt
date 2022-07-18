@@ -1,0 +1,88 @@
+@removelist 'SubMove'
+if not listexists 'SubMove'
+  @createlist 'SubMove'
+  //======================================================== 설정
+  //
+  @pushlist 'SubMove' '0x2ece8'     //0 :본캐
+  @pushlist 'SubMove' '0x180cf'    //1 :본캐 펫
+  @pushlist 'SubMove' '0x44ee'          //2 : 서브캐릭 펫
+  @pushlist 'SubMove' '2'          //3 : 몹하고의 거리
+  //
+  //-------------------------------------------------------------
+endif
+@getenemy 'murderer' 'enemy' 'criminal' 'gray' 'closest'
+if @findobject 'SubMove[1]' 'any' 'ground' 0 10 and @inrange 'enemy' 10
+  if @inrange 'enemy' 'SubMove[3]'
+    if @x 'enemy' > x 'self' and @y 'enemy' > y 'self'
+      run 'Northwest'
+    elseif @x 'enemy' > x 'self' and @y 'enemy' < y 'self'
+      run 'Southwest'
+    elseif @x 'enemy' > x 'self' and @y 'enemy' == y 'self'
+      run 'West'
+    elseif @x 'enemy' < x 'self' and @y 'enemy' > y 'self'
+      run 'Northeast'
+    elseif @x 'enemy' < x 'self' and @y 'enemy' < y 'self'
+      run 'Southeast'
+    elseif @x 'enemy' < x 'self' and @y 'enemy' == y 'self'
+      run 'East'
+    elseif @x 'enemy' == x 'self' and @y 'enemy' > y 'self'
+      run 'North'
+    elseif @x 'enemy' == x 'self' and @y 'enemy' < y 'self'
+      run 'South'
+    endif
+    pause 10
+  else
+  
+    if not buffexists 'Invigorate'
+      cast 'Invigorate'
+      pause 2000
+    endif
+    if mounted 0x2edc5 == 1
+      useobject 0x2edc5
+      pause 300
+    endif
+    
+      @attack 'enemy'
+      msg 'all attack'
+      target 'enemy'
+      target 'last'
+      pause 1000
+   
+  endif
+  //적이 10 범위 안에 있으면 내려서 와파 공격
+  //if @inrange 'enemy' 10
+  //  if not @inrange 'enemy' 4
+  //    cast "Wildfire"
+  //    waitfortarget 3500
+  //    target! 0x180cf
+  //    pause 500
+  //  endif
+  //endif
+  //====================================
+else
+  // 본캐 따라가기
+  if not @inrange 'SubMove[0]' 1
+    if not mounted 0x2edc5 == 1
+      useobject 0x44ee
+      pause 300
+    endif
+    if @x 'SubMove[0]' > x 'self' and @y 'SubMove[0]' > y 'self'
+      run 'Southeast'
+    elseif @x 'SubMove[0]' > x 'self' and @y 'SubMove[0]' < y 'self'
+      run 'Northeast'
+    elseif @x 'SubMove[0]' > x 'self' and @y 'SubMove[0]' == y 'self'
+      run 'East'
+    elseif @x 'SubMove[0]' < x 'self' and @y 'SubMove[0]' > y 'self'
+      run 'Southwest'
+    elseif @x 'SubMove[0]' < x 'self' and @y 'SubMove[0]' < y 'self'
+      run 'Northwest'
+    elseif @x 'SubMove[0]' < x 'self' and @y 'SubMove[0]' == y 'self'
+      run 'West'
+    elseif @x 'SubMove[0]' == x 'self' and @y 'SubMove[0]' > y 'self'
+      run 'South'
+    elseif @x 'SubMove[0]' == x 'self' and @y 'SubMove[0]' < y 'self'
+      run 'North'
+    endif
+    pause 10
+  endif
+endif
